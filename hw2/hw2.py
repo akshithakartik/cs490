@@ -62,15 +62,13 @@ class SarcasmDataset(Dataset):
         input_ids = encoding["input_ids"].squeeze(0)
         attention_mask = encoding["attention_mask"].squeeze(0)
 
-        label_tensor = torch.tensor([label], dtype=torch.long)
+        label_tensor = torch.tensor(label, dtype=torch.long)
 
         return {
             "input_ids": input_ids, 
             "attention_mask": attention_mask, 
             "label": label_tensor
             }
-        
-        raise NotImplementedError("Dataset __getitem__ not implemented")
 
 # --- Model Class ---
 class SarcasmBERT(nn.Module):
@@ -102,9 +100,6 @@ class SarcasmBERT(nn.Module):
         output = self.model(input_ids=input_ids, attention_mask=attention_mask)
         cls_tok = output.last_hidden_state[:, 0, :]
         return self.linear(cls_tok)
-
-        
-        raise NotImplementedError("SarcasmBERT forward pass not implemented")
 
 # --- Training Loop ---
 def train_loop(

@@ -50,7 +50,7 @@ class SarcasmDataset(Dataset):
         val = self.data[index]
         label = val['is_sarcastic']
         text = val['headline']
-        encoding = self.tokenizer.encode_plus(text=text, 
+        encoding = self.tokenizer.encode_plus(text, 
                                               add_special_tokens=True, 
                                               max_length=self.max_length,
                                               padding="max_length",
@@ -59,8 +59,8 @@ class SarcasmDataset(Dataset):
                                               return_tensors='pt'
                                               )
 
-        input_ids = encoding["input_ids"].flatten().long()
-        attention_mask = encoding["attention_mask"].flatten().long()
+        input_ids = encoding["input_ids"].squeeze(0)
+        attention_mask = encoding["attention_mask"].squeeze(0)
 
         label_tensor = torch.tensor([label], dtype=torch.long)
 
